@@ -1,0 +1,33 @@
+ name: Notify Slack on Success
+  if: success() # 이 step은 job이 성공한 경우에만 실행된다.
+  id: slack-success
+  uses: slackapi/slack-github-action@v1.24.0
+  with:
+    payload: |
+      {
+        "channel": "채널 ID",
+        "attachments": [
+          {
+            "color": "#36a64f", # 성공시 연두색
+            "title": "${{ github.repository }}", # 제목은 깃헙 레포지토리
+            "title_link": "https://github.com/${{github.repository}}", # 제목 클릭시 레포지토리로 이동
+            "text": "GitHub Action 성공",
+            "fields": [
+              {
+                "title": "Repository",
+                "value": "${{ github.repository }}",
+                "short": true
+              },
+              {
+                "title": "Tag",
+                "value": "${{ github.ref_name }}",
+                "short": true
+              }
+            ]      
+          }
+        ]
+      }
+  env:
+    SLACK_WEBHOOK_URL: "위에서 설정한 WEBHOOK URL"
+    SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+출처: https://systorage.tistory.com/entry/Github-Actions-GitHub-Actions을-이용한-Slack-알림-설정하기 [SY Storage:티스토리]
